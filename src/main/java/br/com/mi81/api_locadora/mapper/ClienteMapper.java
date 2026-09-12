@@ -11,6 +11,12 @@ import java.util.List;
 @Component
 public class ClienteMapper {
 
+    /**
+     * Converte dados de criação para uma entidade cliente.
+     * @param request dados recebidos para criação
+     * @return entidade cliente
+     */
+
     public Cliente toEntity(ClienteRequestDTO request){
         return Cliente.builder()
                 .loja_id(request.loja_id())
@@ -18,10 +24,15 @@ public class ClienteMapper {
                 .ultimoNome(request.ultimoNome())
                 .email(request.email())
                 .endereco_id(request.endereco_id())
-                .ativo(request.ativo())
                 .dataCriacao(request.dataCriacao())
                 .build();
     }
+
+    /**
+     * Converte uma entidade cliente para o DTO de resposta.
+     * @param cliente entidade persistida
+     * @return representação publica cliente.
+     */
 
     public ClienteResponseDTO toResponse(Cliente cliente){
         return new ClienteResponseDTO(
@@ -31,12 +42,14 @@ public class ClienteMapper {
                 cliente.getUltimoNome(),
                 cliente.getEmail(),
                 cliente.getEndereco_id(),
-                cliente.isAtivo(),
                 cliente.getDataCriacao(),
+                cliente.isAtivo(),
                 cliente.getUltimaAtualizacao());
     }
 
-
+    /**
+     * Converte uma lista de Entidades para uma lista de DTOs de resposta
+     */
     public List<ClienteResponseDTO> toResponseList(List<Cliente> clientes){
         return clientes.stream()
                 .map(this::toResponse)

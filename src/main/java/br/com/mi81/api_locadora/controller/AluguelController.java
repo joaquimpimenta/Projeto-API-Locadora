@@ -1,9 +1,9 @@
 package br.com.mi81.api_locadora.controller;
 
-import br.com.mi81.api_locadora.dto.clienteDTO.ClienteRequestDTO;
-import br.com.mi81.api_locadora.dto.clienteDTO.ClienteResponseDTO;
-import br.com.mi81.api_locadora.dto.clienteDTO.ClienteUpdateRequestDTO;
-import br.com.mi81.api_locadora.service.ClienteService;
+import br.com.mi81.api_locadora.dto.aluguelDTO.AluguelRequestDTO;
+import br.com.mi81.api_locadora.dto.aluguelDTO.AluguelResponseDTO;
+import br.com.mi81.api_locadora.dto.aluguelDTO.AluguelUpdateRequestDTO;
+import br.com.mi81.api_locadora.service.AluguelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,59 +21,59 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * Controller REST responsavel pelos endpoints relacionados ao recurso cliente
+ * Controller REST responsavel pelos endpoints relacionados ao recurso aluguel
  */
 @Tag(
-        name = "Clientes",
-        description = "Operações relacionadas ao gerenciamento de clientes"
+        name = "Alugueis",
+        description = "Operações relacionadas ao gerenciamento de aluguéis"
 )
-@RequestMapping("/api-locadora/v1/cliente")
+@RequestMapping("/api-locadora/v1/aluguel")
 @RestController
-public class ClienteController {
+public class AluguelController {
 
-    private final ClienteService service;
+    private final AluguelService service;
 
-    public ClienteController(ClienteService service) {
+    public AluguelController(AluguelService service) {
         this.service = service;
     }
 
     /**
-     * Lista todos os clientes cadastrados
-     * @return Lista de clientes
+     * Lista todos os aluguéis cadastrados
+     * @return Lista de alugueis
      */
     @Operation(
-            summary = "Lista de clientes",
-            description = "Retorna todos os clientes cadastrados"
+            summary = "Lista de alugueis",
+            description = "Retorna todos os alugueis cadastrados"
     )
     @ApiResponse(
             responseCode = "200",
-            description = "Clientes retornados com sucesso"
+            description = "Alugueis retornados com sucesso"
     )
     @GetMapping("/listar")
-    public ResponseEntity<List<ClienteResponseDTO>> listar(){
+    public ResponseEntity<List<AluguelResponseDTO>> listar(){
         return ResponseEntity.ok(service.listar());
     }
 
     @Operation(
-            summary = "Busca cliente por ID",
-            description = "Retorna os detalhes de um cliente especifico com base no seu ID"
+            summary = "Busca aluguel por ID",
+            description = "Retorna os detalhes de um aluguel especifico com base no seu ID"
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Cliente encontrado com sucesso"
+                    description = "Aluguel encontrado com sucesso"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Cliente não encontrado",
+                    description = "Aluguel não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
-    @GetMapping("/{cliente_id}")
-    public ResponseEntity<ClienteResponseDTO> buscarPorId(
-            @Parameter(description = "identificador unico do cliente", example = "1")
-            @PathVariable Long cliente_id){
-        return ResponseEntity.ok(service.buscarPorId(cliente_id));
+    @GetMapping("/{aluguel_id}")
+    public ResponseEntity<AluguelResponseDTO> buscarPorId(
+            @Parameter(description = "identificador unico do aluguel", example = "1")
+            @PathVariable Long aluguel_id){
+        return ResponseEntity.ok(service.buscarPorId(aluguel_id));
     }
 
     @Operation(
@@ -92,48 +92,48 @@ public class ClienteController {
             )
     })
     @PostMapping("/cadastrar")
-    public ResponseEntity<ClienteResponseDTO> cadastrar(@Valid @RequestBody ClienteRequestDTO requestDTO){
-        ClienteResponseDTO cliente = service.cadastrar(requestDTO);
+    public ResponseEntity<AluguelResponseDTO> cadastrar(@Valid @RequestBody AluguelRequestDTO requestDTO){
+        AluguelResponseDTO aluguel = service.cadastrar(requestDTO);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(cliente.id())
+                .path("/{aluguel_id}")
+                .buildAndExpand(aluguel.aluguel_id())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(cliente);
+        return ResponseEntity.created(uri).body(aluguel);
     }
 
     /**
-     * Atualiza os dados de um cliente existente
-     * @param id Identificador unico do cliente a ser atualizado
-     * @param request DTO com os novos dados do cliente
+     * Atualizar os dados de um aluguel existente
+     * @param id Identificador único do aluguel a ser atualizado
+     * @param requestDTO DTO com os novos dados do aluguel
      * @return DTO atualizado
      */
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> atualizar(
+    public ResponseEntity<AluguelResponseDTO> atualizar(
             @Parameter(description = "identificador unico do cliente", example = "1")
             @PathVariable Long id,
-            @Valid @RequestBody ClienteUpdateRequestDTO request){
-        return ResponseEntity.ok(service.atualizar(id, request));
+            @Valid @RequestBody AluguelUpdateRequestDTO requestDTO){
+        return ResponseEntity.ok(service.atualizar(id, requestDTO));
     }
 
     /**
-     * Remove um cliente
-     * @param id Identificador unico do cliente a ser removido
+     * Remove um aluguel
+     * @param id Identificador unico do aluguel a ser removido
      * @return Resposta sem conteudo (HTTP 204 no Content)
      */
     @Operation(
-            summary = "Remove um cliente",
-            description = "Realiza uma exclusão do cliente com base no seu identificador"
+            summary = "Remove um aluguel",
+            description = "Realiza uma exclusão do aluguel com base no seu identificador"
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Cliente removido com sucesso"
+                    description = "Aluguel removido com sucesso"
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Cliente não encontrado",
+                    description = "Aluguel não encontrado",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))
             )
     })
@@ -142,5 +142,4 @@ public class ClienteController {
         service.remover(id);
         return ResponseEntity.noContent().build();
     }
-
 }

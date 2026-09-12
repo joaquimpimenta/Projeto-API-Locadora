@@ -2,11 +2,19 @@ package br.com.mi81.api_locadora.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+/**
+ * Representa um cliente persistindo pela aplicação
+ * <p>Esta entidade contém os dados internos utilizados pela camada de persistência</p>
+ */
 
 @Getter
 @Setter
@@ -36,8 +44,12 @@ public class Cliente {
     @Column(nullable = false)
     private boolean ativo;
 
+    @CreatedDate
+    @Column(name = "data_criacao")
     private LocalDate dataCriacao;
 
+    @UpdateTimestamp
+    @Column(name = "ultima_atualizacao")
     private Timestamp ultimaAtualizacao;
 
 }

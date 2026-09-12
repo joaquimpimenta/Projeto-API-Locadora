@@ -7,7 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.sql.Timestamp;
 
 /**
- * Representa um categoria persistindo pela aplicação
+ * Representa um ator persistindo pela aplicação
  * <p>Esta entidade contém os dados internos utilizados pela camada de persistência</p>
  */
 
@@ -16,16 +16,19 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "categoria")
+@Table(name = "ator")
 @Builder
 @Data
-public class Categoria {
+public class Ator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoria_id;
+    private Long ator_id;
 
-    @Column(name = "nome", nullable = false)
-    private String nome;
+    @Column(nullable = false)
+    private String primeiro_nome;
+
+    @Column(nullable = false)
+    private String ultimo_nome;
 
     @UpdateTimestamp
     @Column(name = "ultima_atualizacao")

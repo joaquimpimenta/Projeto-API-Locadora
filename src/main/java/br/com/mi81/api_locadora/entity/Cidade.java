@@ -2,32 +2,30 @@ package br.com.mi81.api_locadora.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 
 /**
- * Representa um categoria persistindo pela aplicação
+ * Representa um cidade persistindo pela aplicação
  * <p>Esta entidade contém os dados internos utilizados pela camada de persistência</p>
  */
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "categoria")
+@Table(name = "cidade")
 @Builder
 @Data
-public class Categoria {
+@Entity
+public class Cidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoria_id;
+    private Long cidade_id;
 
-    @Column(name = "nome", nullable = false)
-    private String nome;
+    @Column(nullable = false)
+    private String cidade;
 
-    @UpdateTimestamp
-    @Column(name = "ultima_atualizacao")
+    private Long pais_id;
+
     private Timestamp ultima_atualizacao;
 }
